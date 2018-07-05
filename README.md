@@ -1,8 +1,13 @@
-Django-cbvpatterns
+Django cbvpatterns
 ==================
 
 A nicer version of `patterns()` for use with class based views. Inspired
-largely by Loic.
+largely by Loic. This is an improved version of [mjtamlyn cbvpatterns](https://github.com/mjtamlyn/django-cbvpatterns) to support latest versions of Django
+
+Django supported versions
+-------------
+    Django 1.10
+    Django 1.11
 
 What is this?
 -------------
@@ -57,5 +62,5 @@ Contributing
 ------------
 
 Development takes place
-`on GitHub <http://github.com/mjtamlyn/django-cbvpatterns>`_; pull requests are
-welcome. Run tests with `tox <http://tox.readthedocs.org/>`_.
+`on GitHub <http://github.com/lalzada/django-cbvpatterns>`_; pull requests are
+welcome.

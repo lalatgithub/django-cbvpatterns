@@ -11,14 +11,13 @@ setup(
     version = '0.1',
     description = 'A better patterns() for classbased views',
     license = 'BSD',
-    long_description = read('README.rst'),
+    long_description = read('README.md'),
     url = 'https://github.com/lalzada/django-cbvpatterns',
 
     author = 'Lal Zada',
     author_email = 'lalzadamohmand@gmail.com',
 
     py_modules = ['cbvpatterns'],
-    install_requires = ['django'],
 
     classifiers = (
         'Development Status :: 4 - Beta',
