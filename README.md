@@ -8,55 +8,63 @@ Django supported versions
 -------------
     Django 1.10
     Django 1.11
+    Django 2.0
+    Django 2.1b1
 
 What is this?
 -------------
 
-If you're a big fan of class based views in Django, you might often find your
-urls.py starting to look a little cluttered. Something like::
+If you're a big fan of class based views in Django or you want to import views from one module
+to another module's `urls.py` you might often find your `urls.py` starting to look a little cluttered. Something like::
 
-    from django.conf.urls import patterns, url
+    from django.conf.urls import url
+    from django.urls import path, re_path # Django >= 2.0
 
-    from ponies import views
+    from account.user import views as userViews
+    from github.projects import views as githubViews
+    from favorite.wishlist import views as wishlistViews
 
+    # Django < 2.0
+    urlpatterns = [
+        url(r'^user/login/$', userViews.login, name='login'),
+        url(r'^github/projects/$', githubViews.projects, name='projects'),
+        url(r'^wishlist/(?P<pk>\d+)/$', wishlistViews.wishlist, name='wishlist-detail'),
+    ]
 
-    urlpatterns = patterns('',
-        url(r'^$', views.Index.as_view(), name='index'),
-        url(r'^ponies/$', views.PonyList.as_view(), name='pony-list'),
-        url(r'^ponies/create/$', views.PonyCreate.as_view(), name='pony-create'),
-        url(r'^ponies/(?P<pk>\d+)/$', views.PonyDetail.as_view(), name='pony-detail'),
-        url(r'^ponies/(?P<pk>\d+)/edit/$', views.PonyUpdate.as_view(), name='pony-update'),
-    )
+    # Django >= 2.0
+    urlpatterns = [
+        path('user/login', userViews.login, name='login'),
+        path('github/projects', githubViews.projects, name='projects'),
+        re_path(r'^wishlist/(?P<pk>\d+)', wishlistViews.wishlist, name='wishlist-detail'),
+    ]
 
-The shortcuts you can use in patterns are really functional-view specific. The
-functional version looks much nicer::
+So we can now have a class based view or functional view which has the same feel::
 
-    from django.conf.urls import patterns, url
+    from cbvpatterns import url
+    from cbvpatterns import path, re_path # Django >= 2.0
 
+    # no need to import views from other modules
 
-    urlpatterns = patterns('ponies.views',
-        url(r'^$', 'index', name='index'),
-        url(r'^ponies/$', 'pony_list', name='pony-list'),
-        url(r'^ponies/create/$', 'pony_create', name='pony-create'),
-        url(r'^ponies/(?P<pk>\d+)/$', 'pony_detail', name='pony-detail'),
-        url(r'^ponies/(?P<pk>\d+)/edit/$', 'pony_update, name='pony-update'),
-    )
+    # Django < 2.0
+    urlpatterns = [
+        url(r'^user/login/$', 'account.user.views.login', name='login'),
+        url(r'^github/projects/$', 'github.projects.views.projects', name='projects'),
+        url(r'^wishlist/(?P<pk>\d+)/$', 'favorite.wishlist.views.wishlist', name='wishlist-detail'),
+    ]
 
-So we can now have a class based view version which has the same feel::
-
-    from cbvpatterns import patterns, url
-
-
-    urlpatterns = patterns('ponies.views',
-        url(r'^$', 'Index', name='index'),
-        url(r'^ponies/$', 'PonyList', name='pony-list'),
-        url(r'^ponies/create/$', 'PonyCreate', name='pony-create'),
-        url(r'^ponies/(?P<pk>\d+)/$', 'PonyDetail', name='pony-detail'),
-        url(r'^ponies/(?P<pk>\d+)/edit/$', 'PonyUpdate, name='pony-update'),
-    )
+    # Django >= 2.0
+    urlpatterns = [
+        path('user/login', 'account.user.views.login', name='login'),
+        path('github/projects', 'github.projects.views.projects', name='projects'),
+        re_path(r'^wishlist/(?P<pk>\d+)', 'favorite.wishlist.views.wishlist', name='wishlist-detail'),
+    ]
 
 You can also pass in the actual view classes directly, rather than using the
 string representation.
+
+##### NOTE:
+You can only import url from cbvpatterns if you are using Django < 2.0 <br/>
+You can only import path, re_path from cbvpatterns if you are using Django >= 2.0
 
 Contributing
 ------------
